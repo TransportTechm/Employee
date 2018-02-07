@@ -1,0 +1,15 @@
+{
+  "name": "employee",
+  "version": "1.0.0",
+  "description": "Employee Micro Service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pardhu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mysql": "^2.15.0"
+  }
+}
