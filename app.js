@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/Users');
 var permission = require('./routes/Permission');
-var eurekaclient = require('./eureka');
+//var eurekaclient = require('./eureka');
 
 // Parsers for POST data
 app.use(function (req, res, next) {
