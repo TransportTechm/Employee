@@ -4,6 +4,27 @@ var router = express.Router();
 var User = require('../models/Users');
 var Register = require('../models/Register');
 
+router.get('/login', function (req, res, next) {
+    if(req.query.username && req.query.password){
+        User.userAuthenticate(req.query.username, req.query.password, function(err, rows, fields){
+            if(err) {
+                console.error('Internal Server Error');
+                res.status(500);
+                res.render('error', { error: err });
+            } else if(rows.length == 0) {
+                console.log('Invalid User Credentials');
+                res.status(401);
+                res.json('{message: Invalid User Credentials}');
+            } else {
+                res.json(rows);
+            }
+        })
+    } else{
+        res.status(400);
+        res.render('error', { error: "Invalid Request" });
+    }
+});
+
 router.get('/:EMP_GID?', function (req, res, next) {
     if (req.params.EMP_GID) {
         User.getUserById(req.params.EMP_GID, function (err, rows, fields) {
@@ -78,6 +99,28 @@ router.post('/:EMP_GID/register/bus', function (req, res, next) {
             res.json(err);
         } else {
             res.json(count);
+        }
+    });
+});
+router.put('/:EMP_GID/register/bus', function (req, res, next) {
+    Register.updateBusRegister(req.params.EMP_GID,req.body, function (err, rows) {
+        if (err) {
+            res.json(err);
+        } else if(rows.length == 0) {
+            res.json("No Update Done");
+        } else {
+            res.json(rows);
+        }
+    });
+});
+router.get('/:EMP_GID/register/bus', function (req, res, next) {
+    Register.getBusRegister(req.params.EMP_GID, function (err, rows) {
+        if (err) {
+            res.json(err);
+        } else if(rows.length == 0) {
+            res.json("No result found");
+        } else {
+            res.json(rows);
         }
     });
 });

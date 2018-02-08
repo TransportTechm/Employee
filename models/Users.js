@@ -33,6 +33,9 @@ var User = {
     }, 
     getPermissionForUser: function(id, callback) {  
         return db.query("SELECT permission.id, permission.tbl_user_emp_gid,Role.role_name FROM tbl_user_role permission INNER JOIN tbl_role Role on permission.tbl_role_id=Role.id where permission.tbl_user_emp_gid=?", [id], callback);  
+    },
+    userAuthenticate: function(username, password, callback) {  
+        return db.query("select * from tbl_user where user_name=? and pass_word=?", [username, password], callback);  
     }, 
 };  
 
