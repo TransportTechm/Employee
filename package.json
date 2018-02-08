@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "^4.16.2",
     "mysql": "^2.15.0",
-    "pcf-eureka-client": "0.0.1"
+    "pcf-eureka-client": "0.0.1",
+    "swagger-jsdoc": "^1.9.7"
   }
 }
