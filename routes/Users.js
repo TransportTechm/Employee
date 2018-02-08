@@ -24,7 +24,44 @@ router.get('/login', function (req, res, next) {
         res.render('error', { error: "Invalid Request" });
     }
 });
+/**
+ * @swagger
+ * definitions:
+ *   Users:
+ *     properties:
+ *       emp_gid:
+ *         type: integer
+ *       first_name:
+ *         type: string
+ *       last_name:
+ *         type: string
+ *       email_id:
+ *         type: string
+ *       mobile:
+ *         type: integer
+ *       gender:
+ *         type: string
+ *       band:
+ *         type: string
+ */
 
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     tags:
+ *       - Users
+ *     description: Returns all Users
+ *     produces:
+ *       - application/json
+ *     consumes:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: An array of Users
+ *         schema:
+ *           $ref: '#/definitions/Users'
+ */
 router.get('/:EMP_GID?', function (req, res, next) {
     if (req.params.EMP_GID) {
         User.getUserById(req.params.EMP_GID, function (err, rows, fields) {
@@ -48,6 +85,26 @@ router.get('/:EMP_GID?', function (req, res, next) {
         });
     }
 });
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     tags:
+ *       - Users
+ *     description: Creates a new User
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: user
+ *         description: Users object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Users'
+ *     responses:
+ *       200:
+ *         description: Successfully created
+ */
 router.post('/', function (req, res, next) {
     User.addUser(req.body, function (err, count) {
         if (err) {

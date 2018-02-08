@@ -1,12 +1,36 @@
 var http = require("http");
 var express = require('express');
 var app = express();
+var path = require('path');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/Users');
 var permission = require('./routes/Permission');
+var swaggerJSDoc = require('swagger-jsdoc');
 //var eurekaclient = require('./eureka');
+
+// swagger definition
+var swaggerDefinition = {
+  info: {
+    title: 'Employee Micro Service API',
+    version: '1.0',
+    description: 'Demonstrating how to desribe a RESTful API with Swagger',
+  },
+  host: 'localhost:3000',
+  basePath: '/transportationapi/employee/1.0',
+};
+
+// options for the swagger docs
+var options = {
+  // import swaggerDefinitions
+  swaggerDefinition: swaggerDefinition,
+  // path to the API docs
+  apis: ['./routes/*.js'],
+};
+
+// initialize swagger-jsdoc
+var swaggerSpec = swaggerJSDoc(options);
 
 // Parsers for POST data
 app.use(function (req, res, next) {
@@ -16,7 +40,7 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
-
+app.use(express.static(path.join(__dirname, 'public')));
 //start body-parser configuration
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({
@@ -29,6 +53,10 @@ app.use(bodyParser.urlencoded({
 app.use('/', routes);
 app.use('/transportationapi/employee/1.0/users', users);
 app.use('/transportationapi/employee/1.0/permission', permission);
+app.get('/swagger.json', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 
 //Setting up server
 var server = app.listen(process.env.PORT || 3000, function () {

@@ -2,10 +2,10 @@ var db = require('./dbconnection'); //reference of dbconnection.js
 
 var User = {  
     getAllUsers: function(callback) {  
-        return db.query("select * from tbl_user", callback);  
+        return db.query("select emp_gid,first_name,last_name,email_id,mobile_id as mobile,gender,band from tbl_user", callback);  
     },  
     getUserById: function(id, callback) {  
-        return db.query("select * from tbl_user where emp_gid=?", [id], callback);  
+        return db.query("select emp_gid,first_name,last_name,email_id,mobile_id as mobile,gender,band from tbl_user where emp_gid=?", [id], callback);  
     },  
     addUser: function(User, callback) {  
         return db.query("Insert into tbl_user values(?,?,?,?,?,?,?)", [User.emp_gid,User.first_name,User.last_name,User.email_id,User.mobile_id,User.gender,User.band], callback);  
