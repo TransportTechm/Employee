@@ -4,10 +4,10 @@ console.log("Eureka Client");
 const client = new Eureka({
   // application instance information 
   instance: {
-    app: '/EmployeeServiceTechm',
+    app: 'EmployeeServiceTechm',
     hostName: 'https://employeeservicetechm.cfapps.io',
-    ipAddr: 'https://employeeservicetechm.cfapps.io',
-    port: 8080,
+    //ipAddr: 'https://employeeservicetechm.cfapps.io',
+    port: 443,
     vipAddress: 'https://employeeservicetechm.cfapps.io',
     dataCenterInfo: {
       name: 'PCF',
@@ -15,7 +15,7 @@ const client = new Eureka({
   },
   eureka: {
     serviceUrl: [
-      'https://eureka-e301f532-19bc-42e0-bf0f-99f12992a63d.cfapps.io'
+      'https://eureka-e301f532-19bc-42e0-bf0f-99f12992a63d.cfapps.io/'
     ]
   },
   oauth2: {
@@ -27,5 +27,5 @@ const client = new Eureka({
   }
 });
 client.start();
-const appInfo = client.getInstancesByAppId('ServiceRegistryTechM');
-console.log("Pardhu"+appInfo);
+//const appInfo = client.getInstancesByAppId('ServiceRegistryTechM');
+//console.log("Pardhu"+appInfo);

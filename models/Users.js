@@ -2,13 +2,13 @@ var db = require('./dbconnection'); //reference of dbconnection.js
 
 var User = {  
     getAllUsers: function(callback) {  
-        return db.query("select emp_gid,first_name,last_name,email_id,mobile_id as mobile,gender,band from tbl_user", callback);  
+        return db.query("select emp_gid,first_name,last_name,email_id,mobile_id as mobile,gender,band,user_name from tbl_user", callback);  
     },  
     getUserById: function(id, callback) {  
-        return db.query("select emp_gid,first_name,last_name,email_id,mobile_id as mobile,gender,band from tbl_user where emp_gid=?", [id], callback);  
+        return db.query("select emp_gid,first_name,last_name,email_id,mobile_id as mobile,gender,band,user_name from tbl_user where emp_gid=?", [id], callback);  
     },  
     addUser: function(User, callback) {  
-        return db.query("Insert into tbl_user values(?,?,?,?,?,?,?)", [User.emp_gid,User.first_name,User.last_name,User.email_id,User.mobile_id,User.gender,User.band], callback);  
+        return db.query("Insert into tbl_user values(?,?,?,?,?,?,?,?,?)", [User.emp_gid,User.first_name,User.last_name,User.email_id,User.mobile_id,User.gender,User.band,User.user_name,User.pass_word], callback);  
     },  
     updateUser: function(id, User, callback) {  
         return db.query("UPDATE tbl_user SET first_name = ?,last_name = ?, email_id = ?, mobile_id = ?, gender = ?, band = ? where emp_gid = ?", [User.first_name,User.last_name,User.email_id,User.mobile_id,User.gender,User.band,id], callback);  

@@ -43,6 +43,10 @@ router.get('/login', function (req, res, next) {
  *         type: string
  *       band:
  *         type: string
+ *       user_name:
+ *         type: string
+ *       pass_word:
+ *         type: string
  */
 
 /**
