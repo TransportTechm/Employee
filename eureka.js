@@ -10,7 +10,7 @@ const client = new Eureka({
     port: 443,
     vipAddress: 'https://employeeservicetechm.cfapps.io',
     dataCenterInfo: {
-      name: 'PCF',
+      name: 'MyOwn',
     },
   },
   eureka: {
