@@ -8,20 +8,22 @@ router.get('/login', function (req, res, next) {
     if(req.query.username && req.query.password){
         User.userAuthenticate(req.query.username, req.query.password, function(err, rows, fields){
             if(err) {
-                console.error('Internal Server Error');
+                console.error('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [Internal Server Error]');
                 res.status(500);
                 res.render('error', { error: err });
             } else if(rows.length == 0) {
-                console.log('Invalid User Credentials');
+                console.error('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [Invalid User Credentials]');
                 res.status(401);
-                res.json({message: "Invalid User Credentials"});
+                res.json({status:"fail", message: "Invalid User Credentials"});
             } else {
-                res.json(rows);
+                console.log('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [User logged in]');
+                res.json({status:"success", data: rows});
             }
         })
     } else{
         res.status(400);
-        res.render('error', { error: "Invalid Request" });
+        console.error('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [Missing Parameters]');
+        res.json({status:"fail", message: "Request is missing few parameters!"});
     }
 });
 /**

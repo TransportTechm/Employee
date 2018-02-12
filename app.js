@@ -57,6 +57,7 @@ app.get('/swagger.json', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
+app.use(logErrors);
 
 //Setting up server
 var server = app.listen(process.env.PORT || 3000, function () {
@@ -64,6 +65,10 @@ var server = app.listen(process.env.PORT || 3000, function () {
   console.log("App now running on port", port);
 });
 
+function logErrors (err, req, res, next) {
+  console.error('[Employee] - ['+req.path+'] - [] - ['+req.method+'] - [Internal Server Error]')
+  next(err);
+}
 /* var server = app.listen(3000, "127.0.0.1", function () {
   var host = server.address().address
   var port = server.address().port
