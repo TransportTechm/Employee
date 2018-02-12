@@ -13,8 +13,8 @@ var Register = {
     getBusRegisterCheck: function (id, callback) {
         return db.query("SELECT id FROM tbl_register_employee_bus_details WHERE tbl_user_emp_gid=? AND status=1", [id], callback);
     },
-    updateBusRegister: function (id, Register, callback) {
-        return db.query("UPDATE tbl_register_employee_bus_details SET route_no=?, origin=?, destination=?, departure_time=?, pick_up_point=?, journey_type=?, journey_date=?, status=? WHERE tbl_user_emp_gid=?", [Register.route_no,Register.origin,Register.destination,Register.departure_time,Register.pick_up_point,Register.journey_type,Register.journey_date,Register.status,id], callback);
+    updateBusRegister: function (gid,id,Register, callback) {
+        return db.query("UPDATE tbl_register_employee_bus_details SET route_no=?, origin=?, destination=?, departure_time=?, pick_up_point=?, journey_type=?, journey_date=? WHERE tbl_user_emp_gid=? and id=?", [Register.route_no,Register.origin,Register.destination,Register.departure_time,Register.pick_up_point,Register.journey_type,Register.journey_date,gid,id], callback);
     },
 };
 

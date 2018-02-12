@@ -163,8 +163,8 @@ router.post('/:EMP_GID/register/bus', function (req, res, next) {
         }
     });
 });
-router.put('/:EMP_GID/register/bus', function (req, res, next) {
-    Register.updateBusRegister(req.params.EMP_GID,req.body, function (err, rows) {
+router.put('/:EMP_GID/register/bus/:ID', function (req, res, next) {
+    Register.updateBusRegister(req.params.EMP_GID,req.params.ID,req.body, function (err, rows) {
         if (err) {
             res.json(err);
         } else if(rows.length == 0) {
