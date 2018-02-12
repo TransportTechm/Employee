@@ -1,6 +1,6 @@
 ---
 applications:
-- name: EmployeeServiceTechm
+- name: EmployeeServiceTechmDemo
   memory: 512M
   instances: 1
   path: .
