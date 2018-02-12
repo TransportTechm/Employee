@@ -185,4 +185,15 @@ router.get('/:EMP_GID/register/bus', function (req, res, next) {
         }
     });
 });
+router.get('/:EMP_GID/registercheck', function (req, res, next) {
+    Register.getBusRegisterCheck(req.params.EMP_GID, function (err, rows) {
+        if (err) {
+            res.json(err);
+        } else if(rows.length == 0) {
+            res.json("No result found");
+        } else {
+            res.json(rows);
+        }
+    });
+});
 module.exports = router;
