@@ -14,7 +14,7 @@ router.get('/login', function (req, res, next) {
             } else if(rows.length == 0) {
                 console.log('Invalid User Credentials');
                 res.status(401);
-                res.json('{message: Invalid User Credentials}');
+                res.json({message: "Invalid User Credentials"});
             } else {
                 res.json(rows);
             }
