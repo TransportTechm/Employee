@@ -37,6 +37,9 @@ var Register = {
                          INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
                          WHERE user.emp_gid=?", [id], callback);
     },
+    canncelJourney: function (id, callback) {
+        return db.query("UPDATE employee.tbl_register_employee_bus_details AS empbus SET empbus.status=0 WHERE empbus.id=?;", [id], callback);
+    },
 };
 
 module.exports = Register;
