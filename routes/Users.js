@@ -8,9 +8,9 @@ router.get('/login', function (req, res, next) {
     if(req.query.username && req.query.password){
         User.userAuthenticate(req.query.username, req.query.password, function(err, rows, fields){
             if(err) {
-                console.error('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [Internal Server Error]');
+                console.error('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [Internal Server Error] - [Error:'+err.sqlMessage+']');
                 res.status(500);
-                res.render('error', { error: err });
+                res.json({status:"fail", message: "Error while performing DB Query"});
             } else if(rows.length == 0) {
                 console.error('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [Invalid User Credentials]');
                 res.status(401);
@@ -71,9 +71,9 @@ router.get('/login', function (req, res, next) {
 router.get('/', function (req, res, next) {
     User.getAllUsers(function (err, rows, fields) {
         if (err) {
-            console.error('[Employee] - ['+req.path+'] - [getUserById] - ['+req.method+'] - [Error while performing Query]');
+            console.error('[Employee] - ['+req.path+'] - [getUserById] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
             res.status(500)
-            res.render('error', { error: err });
+            res.json({status:"fail", message: "Error while performing DB Query"});
         } else {
             res.json({status:"success", data: rows});
         }
@@ -103,7 +103,7 @@ router.post('/', function (req, res, next) {
     if(req.body){
         User.addUser(req.body, function (err, rows) {
             if (err) {
-                console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']'
+                console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']'
             );
                 res.status(500);
                 res.json({status:"fail", message: "Error while performing DB Query"});
@@ -128,9 +128,9 @@ router.get('/:EMP_GID', function (req, res, next) {
     if (req.params.EMP_GID) {
         User.getUserById(req.params.EMP_GID, function (err, rows, fields) {
             if (err) {
-                console.error('[Employee] - ['+req.originalUrl+'] - [getUserById] - ['+req.method+'] - [Error while performing Query]');
+                console.error('[Employee] - ['+req.originalUrl+'] - [getUserById] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
                 res.status(500);
-                res.render('error', { error: err });
+                res.json({status:"fail", message: "Error while performing DB Query"});
             } else {
                 res.json({status:"success", data: rows});
             }
@@ -140,43 +140,66 @@ router.get('/:EMP_GID', function (req, res, next) {
 router.delete('/:EMP_GID', function (req, res, next) {
     User.deleteUser(req.params.EMP_GID, function (err, count) {
         if (err) {
-            res.json(err);
+            console.error('[Employee] - ['+req.originalUrl+'] - [deleteUser] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
         } else {
-            res.json(count);
+            res.json({status:"success", data: "Data deleted successfully"});
         }
     });
 });
 router.put('/:EMP_GID', function (req, res, next) {
     User.updateUser(req.params.EMP_GID, req.body, function (err, rows) {
         if (err) {
-            res.json(err);
+            console.error('[Employee] - ['+req.originalUrl+'] - [updateUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
         } else {
-            res.json(rows);
+            if(rows.affectedRows == 1) {
+                res.status(200);
+                res.json({status:"success", data: req.body});
+            }else {   
+                console.error('[Employee] - ['+req.originalUrl+'] - [updateUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+rows.sqlMessage+']');
+                res.status(500);
+                res.json({status:"fail", message: "Error while performing DB Query"});
+            }
         }
     });
 });
 router.get('/:EMP_GID/permission', function (req, res, next) {
-    User.getPermissionForUser(req.params.EMP_GID, function (err, count) {
+    User.getPermissionForUser(req.params.EMP_GID, function (err, rows) {
         if (err) {
-            res.json(err);
+            console.error('[Employee] - ['+req.originalUrl+'] - [getPermissionForUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
         } else {
-            res.json(count);
+            res.json({status:"success", data: rows});
         }
     });
 });
 router.post('/:EMP_GID/register/cab', function (req, res, next) {
     Register.createCabRegister(req.params.EMP_GID,req.body, function (err, count) {
         if (err) {
-            res.json(err);
+            console.error('[Employee] - ['+req.originalUrl+'] - [createCabRegister] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
         } else {
-            res.json(count);
+            if(rows.affectedRows == 1){
+                res.status(200);
+                req.body["insertId"] = rows.insertId;
+                res.json({status:"success", data: req.body});
+
+            }else{
+                res.status(500);
+                res.json({status:"fail", message: "Error while performing DB Query"});
+            }
         }
     });
 });
 router.post('/:EMP_GID/register/bus', function (req, res, next) {
     Register.createBusRegister(req.params.EMP_GID,req.body, function (err, rows, fields) {
         if (err) {
-            console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
+            console.error('[Employee] - ['+req.originalUrl+'] - [createBusRegister] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
             res.status(500);
             res.json({status:"fail", message: "Error while performing DB Query"});
         } else {
@@ -203,7 +226,7 @@ router.put('/:EMP_GID/register/bus/:ID', function (req, res, next) {
                 res.status(200);
                 res.json({status:"success", data: req.body});
             }else {   
-                console.error('[Employee] - ['+req.originalUrl+'] - [updateBusRegister] - ['+req.method+'] - [Error while performing Query]- [Error:'+rows.sqlMessage+']');
+                console.error('[Employee] - ['+req.originalUrl+'] - [updateBusRegister] - ['+req.method+'] - [Error while performing Query] - [Error:'+rows.sqlMessage+']');
                 res.status(500);
                 res.json({status:"fail", message: "Error while performing DB Query"});
             }
@@ -213,7 +236,7 @@ router.put('/:EMP_GID/register/bus/:ID', function (req, res, next) {
 router.get('/:EMP_GID/register/bus', function (req, res, next) {
     Register.getBusRegister(req.params.EMP_GID, function (err, rows) {
         if (err) {
-            console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
+            console.error('[Employee] - ['+req.originalUrl+'] - [getBusRegister] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
             res.status(500);
             res.json({status:"fail", message: "Error while performing DB Query"});
         } else if(rows.length == 0) {
