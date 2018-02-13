@@ -101,16 +101,21 @@ router.get('/', function (req, res, next) {
  */
 router.post('/', function (req, res, next) {
     if(req.body){
-        User.addUser(req.body, function (err, count) {
+        User.addUser(req.body, function (err, rows) {
             if (err) {
-                console.log("Inside");
                 console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']'
             );
                 res.status(500);
-                //res.render('error', { error: err.sqlMessage });
-                res.json({status:"fail", message: ""});
+                res.json({status:"fail", message: "Error while performing DB Query"});
             } else {
-                res.json(req.body); //or return count for 1 & 0  
+                if(rows.affectedRows == 1){
+                    res.status(200);
+                    res.json({status:"success", data: {"insertId": rows.insertId}});
+
+                }else{
+                    res.status(500);
+                    res.json({status:"fail", message: "Error while performing DB Query"});
+                }
             }
         });
     }else{
@@ -169,33 +174,51 @@ router.post('/:EMP_GID/register/cab', function (req, res, next) {
     });
 });
 router.post('/:EMP_GID/register/bus', function (req, res, next) {
-    Register.createBusRegister(req.params.EMP_GID,req.body, function (err, count) {
+    Register.createBusRegister(req.params.EMP_GID,req.body, function (err, rows, fields) {
         if (err) {
-            res.json(err);
+            console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
         } else {
-            res.json(count);
+            if(rows.affectedRows == 1){
+                res.status(200);
+                res.json({status:"success", data: {"insertId": rows.insertId}});
+
+            }else{
+                res.status(500);
+                res.json({status:"fail", message: "Error while performing DB Query"});
+            }
         }
     });
 });
 router.put('/:EMP_GID/register/bus/:ID', function (req, res, next) {
     Register.updateBusRegister(req.params.EMP_GID,req.params.ID,req.body, function (err, rows) {
         if (err) {
-            res.json(err);
-        } else if(rows.length == 0) {
-            res.json("No Update Done");
+            console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
         } else {
-            res.json(rows);
+            if(rows.affectedRows == 1){
+                res.status(200);
+                res.json({status:"success", data: {"insertId": rows.insertId}});
+
+            }else{
+                res.status(500);
+                res.json({status:"fail", message: "Error while performing DB Query"});
+            }
         }
     });
 });
 router.get('/:EMP_GID/register/bus', function (req, res, next) {
     Register.getBusRegister(req.params.EMP_GID, function (err, rows) {
         if (err) {
-            res.json(err);
+            console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
         } else if(rows.length == 0) {
-            res.json("No result found");
+            res.json({status:"fail", message: "No result found"});
         } else {
-            res.json(rows);
+            res.json({status:"success", data: rows});
         }
     });
 });
