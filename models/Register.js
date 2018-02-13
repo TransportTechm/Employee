@@ -35,7 +35,7 @@ var Register = {
                          empbus.created_date, empbus.journey_type, \
                          empbus.status FROM employee.tbl_register_employee_bus_details AS empbus \
                          INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
-                         WHERE user.emp_gid=?", [id], callback);
+                         WHERE empbus.status=1 AND user.emp_gid=?", [id], callback);
     },
     canncelJourney: function (id, callback) {
         return db.query("UPDATE employee.tbl_register_employee_bus_details AS empbus SET empbus.status=0 WHERE empbus.id=?;", [id], callback);

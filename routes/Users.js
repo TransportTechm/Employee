@@ -296,4 +296,26 @@ router.get('/:EMP_GID/journeys', function (req, res, next) {
         }
     });
 });
+router.get('/:EMP_GID/journeys/active', function (req, res, next) {
+    Register.getBusJourneys(req.params.EMP_GID, function (err, rows) {
+        if (err) {
+            console.error('[Employee] - ['+req.originalUrl+'] - [getBusRegisterCheck] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
+        }else {
+            res.json({status:"success", data: rows});
+        }
+    });
+});
+router.delete('/journeys/cancel/:ID', function (req, res, next) {
+    Register.canncelJourney(req.params.ID, function (err, rows) {
+        if (err) {
+            console.error('[Employee] - ['+req.originalUrl+'] - [getBusRegisterCheck] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
+        }else {
+            res.json({status:"success", data: "Journey deleted successfully"});
+        }
+    });
+});
 module.exports = router;
