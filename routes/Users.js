@@ -104,16 +104,18 @@ router.post('/', function (req, res, next) {
         User.addUser(req.body, function (err, count) {
             if (err) {
                 console.log("Inside");
-                console.error('[Employee] - ['+req.path+'] - [addUser] - ['+req.method+'] - [Error while performing Query]');
+                console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']'
+            );
                 res.status(500);
-                //res.render('error', { error: err });
+                //res.render('error', { error: err.sqlMessage });
+                res.json({status:"fail", message: ""});
             } else {
                 res.json(req.body); //or return count for 1 & 0  
             }
         });
     }else{
         res.status(400);
-        console.error('[Employee] - ['+req.path+'] - [addUser] - ['+req.method+'] - [Missing POST body]');
+        console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Missing POST body]');
         res.json({status:"fail", message: "Request is missing POST body!"});
     }
 });
@@ -121,7 +123,7 @@ router.get('/:EMP_GID', function (req, res, next) {
     if (req.params.EMP_GID) {
         User.getUserById(req.params.EMP_GID, function (err, rows, fields) {
             if (err) {
-                console.error('[Employee] - ['+req.path+'] - [getUserById] - ['+req.method+'] - [Error while performing Query]');
+                console.error('[Employee] - ['+req.originalUrl+'] - [getUserById] - ['+req.method+'] - [Error while performing Query]');
                 res.status(500);
                 res.render('error', { error: err });
             } else {

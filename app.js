@@ -66,7 +66,7 @@ var server = app.listen(process.env.PORT || 3000, function () {
 });
 
 function logErrors (err, req, res, next) {
-  console.error('[Employee] - ['+req.path+'] - [] - ['+req.method+'] - [Internal Server Error]')
+  console.error('[Employee] - ['+req.originalUrl+'] - ['+req.method+'] - [Internal Server Error]')
   next(err);
 }
 /* var server = app.listen(3000, "127.0.0.1", function () {
