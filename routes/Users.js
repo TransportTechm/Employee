@@ -68,28 +68,16 @@ router.get('/login', function (req, res, next) {
  *         schema:
  *           $ref: '#/definitions/Users'
  */
-router.get('/:EMP_GID?', function (req, res, next) {
-    if (req.params.EMP_GID) {
-        User.getUserById(req.params.EMP_GID, function (err, rows, fields) {
-            if (err) {
-                console.log('Error while performing Query.');
-                res.status(500)
-                res.json(err);
-            } else {
-                res.json(rows);
-            }
-        });
-    } else {
-        User.getAllUsers(function (err, rows, fields) {
-            if (err) {
-                console.log('Error while performing Query.');
-                res.status(500)
-                res.json(err);
-            } else {
-                res.json(rows);
-            }
-        });
-    }
+router.get('/', function (req, res, next) {
+    User.getAllUsers(function (err, rows, fields) {
+        if (err) {
+            console.error('[Employee] - ['+req.path+'] - [getUserById] - ['+req.method+'] - [Error while performing Query]');
+            res.status(500)
+            res.render('error', { error: err });
+        } else {
+            res.json({status:"success", data: rows});
+        }
+    });
 });
 /**
  * @swagger
@@ -112,13 +100,35 @@ router.get('/:EMP_GID?', function (req, res, next) {
  *         description: Successfully created
  */
 router.post('/', function (req, res, next) {
-    User.addUser(req.body, function (err, count) {
-        if (err) {
-            res.json(err);
-        } else {
-            res.json(req.body); //or return count for 1 & 0  
-        }
-    });
+    if(req.body){
+        User.addUser(req.body, function (err, count) {
+            if (err) {
+                console.log("Inside");
+                console.error('[Employee] - ['+req.path+'] - [addUser] - ['+req.method+'] - [Error while performing Query]');
+                res.status(500);
+                //res.render('error', { error: err });
+            } else {
+                res.json(req.body); //or return count for 1 & 0  
+            }
+        });
+    }else{
+        res.status(400);
+        console.error('[Employee] - ['+req.path+'] - [addUser] - ['+req.method+'] - [Missing POST body]');
+        res.json({status:"fail", message: "Request is missing POST body!"});
+    }
+});
+router.get('/:EMP_GID', function (req, res, next) {
+    if (req.params.EMP_GID) {
+        User.getUserById(req.params.EMP_GID, function (err, rows, fields) {
+            if (err) {
+                console.error('[Employee] - ['+req.path+'] - [getUserById] - ['+req.method+'] - [Error while performing Query]');
+                res.status(500);
+                res.render('error', { error: err });
+            } else {
+                res.json({status:"success", data: rows});
+            }
+        });
+    }
 });
 router.delete('/:EMP_GID', function (req, res, next) {
     User.deleteUser(req.params.EMP_GID, function (err, count) {
