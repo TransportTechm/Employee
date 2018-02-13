@@ -16,7 +16,7 @@ router.get('/login', function (req, res, next) {
                 res.status(401);
                 res.json({status:"fail", message: "Invalid User Credentials"});
             } else {
-                console.log('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [User logged in]');
+               // console.log('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [User logged in]');
                 res.json({status:"success", data: rows});
             }
         })
@@ -182,7 +182,8 @@ router.post('/:EMP_GID/register/bus', function (req, res, next) {
         } else {
             if(rows.affectedRows == 1){
                 res.status(200);
-                res.json({status:"success", data: {"insertId": rows.insertId}});
+                req.body["insertId"] = rows.insertId;
+                res.json({status:"success", data: req.body});
 
             }else{
                 res.status(500);
@@ -194,15 +195,15 @@ router.post('/:EMP_GID/register/bus', function (req, res, next) {
 router.put('/:EMP_GID/register/bus/:ID', function (req, res, next) {
     Register.updateBusRegister(req.params.EMP_GID,req.params.ID,req.body, function (err, rows) {
         if (err) {
-            console.error('[Employee] - ['+req.originalUrl+'] - [addUser] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
+            console.error('[Employee] - ['+req.originalUrl+'] - [updateBusRegister] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
             res.status(500);
             res.json({status:"fail", message: "Error while performing DB Query"});
         } else {
-            if(rows.affectedRows == 1){
+            if(rows.affectedRows == 1) {
                 res.status(200);
-                res.json({status:"success", data: {"insertId": rows.insertId}});
-
-            }else{
+                res.json({status:"success", data: req.body});
+            }else {   
+                console.error('[Employee] - ['+req.originalUrl+'] - [updateBusRegister] - ['+req.method+'] - [Error while performing Query]- [Error:'+rows.sqlMessage+']');
                 res.status(500);
                 res.json({status:"fail", message: "Error while performing DB Query"});
             }
@@ -225,11 +226,13 @@ router.get('/:EMP_GID/register/bus', function (req, res, next) {
 router.get('/:EMP_GID/registercheck', function (req, res, next) {
     Register.getBusRegisterCheck(req.params.EMP_GID, function (err, rows) {
         if (err) {
-            res.json(err);
+            console.error('[Employee] - ['+req.originalUrl+'] - [getBusRegisterCheck] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
         } else if(rows.length == 0) {
-            res.json("No result found");
+            res.json({status:"fail", message: "No result found"});
         } else {
-            res.json(rows);
+            res.json({status:"success", data: rows});
         }
     });
 });
