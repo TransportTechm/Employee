@@ -5,7 +5,7 @@ if (process.env.VCAP_SERVICES) {
     var vcap_services = JSON.parse(process.env.VCAP_SERVICES);
     var url = vcap_services.cleardb[0].credentials.uri;
     mysqlSchema=vcap_services.cleardb[0].credentials.name;
-    console.log("PARDHU MQL"+url);
+
     // mysql db Connection
     connection = mysql.createPool({
         host: vcap_services.cleardb[0].credentials.hostname,
