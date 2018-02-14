@@ -37,6 +37,7 @@ var Register = {
     },
     getBusJourneys: function (id, callback) {
         return db.query("SELECT user.emp_gid as gid, concat(user.first_name,' ',user.last_name) AS name, \
+                         empbus.route_no, empbus.origin, empbus.destination, empbus.id, \
                          empbus.created_date, empbus.journey_type, \
                          empbus.status FROM employee.tbl_register_employee_bus_details AS empbus \
                          INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
