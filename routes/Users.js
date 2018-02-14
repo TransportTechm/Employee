@@ -249,8 +249,8 @@ router.get('/:EMP_GID/register/bus', function (req, res, next) {
     });
 });
 
-router.get('/:EMP_GID/registercheck', function (req, res, next) {
-    Register.getBusRegisterCheck(req.params.EMP_GID, function (err, rows) {
+router.get('/:EMP_GID/registercheckyear/:JID', function (req, res, next) {
+    Register.getBusRegisterCheckyear(req.params.EMP_GID,req.params.JID, function (err, rows) {
         if (err) {
             console.error('[Employee] - ['+req.originalUrl+'] - [getBusRegisterCheck] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
             res.status(500);
@@ -260,7 +260,17 @@ router.get('/:EMP_GID/registercheck', function (req, res, next) {
         }
     });
 });
-
+router.get('/:EMP_GID/registerchecksingle/:JID/:JDATE', function (req, res, next) {
+    Register.getBusRegisterChecksingle(req.params.EMP_GID,req.params.JID,req.params.JDATE, function (err, rows) {
+        if (err) {
+            console.error('[Employee] - ['+req.originalUrl+'] - [getBusRegisterCheck] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
+        }else {
+            res.json({status:"success", data: rows});
+        }
+    });
+});
 router.get('/:EMP_GID/journeys/year', function (req, res, next) {
     Register.getBusJourneysYear(req.params.EMP_GID, function (err, rows) {
         if (err) {

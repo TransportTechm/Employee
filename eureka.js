@@ -1,31 +1,39 @@
 const Eureka = require('pcf-eureka-client').Eureka;
-console.log("Eureka Client");
-// example configuration 
+
 const client = new Eureka({
-  // application instance information 
   instance: {
-    app: 'EmployeeServiceTechm',
-    hostName: 'https://employeeservicetechm.cfapps.io',
-    //ipAddr: 'https://employeeservicetechm.cfapps.io',
-    port: 443,
-    vipAddress: 'https://employeeservicetechm.cfapps.io',
+    app: 'empstechm',
+    hostName: 'employeeservicetechm.cfapps.io',
+    ipAddr: '127.0.0.1',
+    statusPageUrl: 'http://employeeservicetechm.cfapps.io',
+    port: {
+      '$': 8080,
+      '@enabled': 'true',
+    },
+    vipAddress: 'empstechm',
     dataCenterInfo: {
+      '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
       name: 'MyOwn',
     },
   },
   eureka: {
-    serviceUrl: [
-      'https://eureka-e301f532-19bc-42e0-bf0f-99f12992a63d.cfapps.io/'
-    ]
+    serviceUrl: [  'https://eureka-59b65872-3262-41f4-b933-c749754ad4b7.cfapps.io/eureka/apps/' ],
   },
+  
   oauth2: {
+
       clientCredentials: {
-          client_id: 'p-service-registry-ab034ced-f137-4574-a102-66dc7ed5fd92',
-          client_secret: '56LyRFlvmyam',
-          access_token_uri: 'https://p-spring-cloud-services.uaa.run.pivotal.io/oauth/token'
+
+          client_id: 'p-service-registry-c4239cfd-788f-485a-8343-b09f6ff7c183',
+
+          client_secret: 'REYdIED2JPDn',
+
+         access_token_uri: 'https://p-spring-cloud-services.uaa.run.pivotal.io/oauth/token'
+
       }
+
   }
+
 });
+
 client.start();
-//const appInfo = client.getInstancesByAppId('ServiceRegistryTechM');
-//console.log("Pardhu"+appInfo);
