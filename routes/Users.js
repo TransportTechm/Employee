@@ -218,7 +218,6 @@ router.post('/:EMP_GID/register/bus', function (req, res, next) {
 
 router.put('/:EMP_GID/register/bus/:ID', function (req, res, next) {
     req.body.updated_date=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-    console.log(req.body);
     Register.updateBusRegister(req.params.EMP_GID,req.params.ID,req.body, function (err, rows) {
         if (err) {
             console.error('[Employee] - ['+req.originalUrl+'] - [updateBusRegister] - ['+req.method+'] - [Error while performing Query]- [Error:'+err.sqlMessage+']');

@@ -21,7 +21,7 @@ var Register = {
     },
     getBusJourneysYear: function (id, callback) {
         return db.query("SELECT user.emp_gid as gid, concat(user.first_name,' ',user.last_name) AS name, \
-                         empbus.route_no, empbus.origin, empbus.destination, \
+                         empbus.route_no, empbus.origin, empbus.destination,empbus.pick_up_point, \
                          empbus.created_date, empbus.updated_date, empbus.journey_type, \
                          empbus.status FROM employee.tbl_register_employee_bus_details AS empbus \
                          INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
@@ -29,7 +29,7 @@ var Register = {
     },
     getBusJourneysSingle: function (id, callback) {
         return db.query("SELECT user.emp_gid as gid, concat(user.first_name,' ',user.last_name) AS name, \
-                         empbus.route_no, empbus.origin, empbus.destination, \
+                         empbus.route_no, empbus.origin, empbus.destination,empbus.pick_up_point, \
                          empbus.created_date, empbus.journey_date, empbus.journey_type, \
                          empbus.status FROM employee.tbl_register_employee_bus_details AS empbus \
                          INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
@@ -37,7 +37,7 @@ var Register = {
     },
     getBusJourneys: function (id, callback) {
         return db.query("SELECT user.emp_gid as gid, concat(user.first_name,' ',user.last_name) AS name, \
-                         empbus.route_no, empbus.origin, empbus.destination, empbus.id, \
+                         empbus.route_no, empbus.origin, empbus.destination,empbus.pick_up_point, empbus.id, \
                          empbus.created_date, empbus.journey_type, \
                          empbus.status FROM employee.tbl_register_employee_bus_details AS empbus \
                          INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
