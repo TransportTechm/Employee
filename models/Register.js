@@ -17,7 +17,7 @@ var Register = {
         return db.query("SELECT id FROM tbl_register_employee_bus_details WHERE tbl_user_emp_gid=? AND journey_date=?", [id,jdate],callback);
     },
     updateBusRegister: function ( gid, id ,Register,callback) {
-        return db.query("UPDATE tbl_register_employee_bus_details SET route_no=?, origin=?, destination=?, departure_time=?, pick_up_point=?, journey_type=?, journey_date=? WHERE tbl_user_emp_gid=? and id=?", [Register.route_no, Register.origin, Register.destination, Register.departure_time, Register.pick_up_point, Register.journey_type, Register.journey_date, gid, id], callback);
+        return db.query("UPDATE tbl_register_employee_bus_details SET route_no=?, origin=?, destination=?, departure_time=?, pick_up_point=?, journey_type=?, journey_date=?,updated_date=? WHERE tbl_user_emp_gid=? and id=?", [Register.route_no, Register.origin, Register.destination, Register.departure_time, Register.pick_up_point, Register.journey_type, Register.journey_date,Register.updated_date, gid, id], callback);
     },
     getBusJourneysYear: function (id, callback) {
         return db.query("SELECT user.emp_gid as gid, concat(user.first_name,' ',user.last_name) AS name, \
