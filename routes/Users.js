@@ -322,7 +322,7 @@ router.get('/:EMP_GID/journeys/active', function (req, res, next) {
 router.put('/:EMP_GID/journeys/cancel/:ID', function (req, res, next) {
     req.body.status=0;
     req.body.updated_date=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-    Register.canncelJourney(req.params.ID,req.body, function (err, rows) {
+    Register.canncelJourney(req.params.EMP_GID,req.params.ID,req.body, function (err, rows) {
         if (err) {
             console.error('[Employee] - ['+req.originalUrl+'] - [getBusRegisterCheck] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
             res.status(500);

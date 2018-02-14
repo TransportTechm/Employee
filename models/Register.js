@@ -43,8 +43,8 @@ var Register = {
                          INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
                          WHERE empbus.status=1 AND user.emp_gid=?", [id], callback);
     },
-    canncelJourney: function (id,Register, callback) {
-        return db.query("UPDATE employee.tbl_register_employee_bus_details AS empbus SET empbus.status=?,empbus.updated_date=? WHERE empbus.id=?;", [Register.status,Register.updated_date,id], callback);
+    canncelJourney: function (gid, id,Register, callback) {
+        return db.query("UPDATE employee.tbl_register_employee_bus_details AS empbus SET empbus.status=?,empbus.updated_date=? WHERE empbus.tbl_user_emp_gid=? and empbus.id=?;", [Register.status,Register.updated_date,gid,id], callback);
     },
 };
 
