@@ -44,8 +44,16 @@ var Register = {
                          WHERE empbus.status=1 AND user.emp_gid=?", [id], callback);
     },
     canncelJourney: function (gid, id,Register, callback) {
-        return db.query("UPDATE employee.tbl_register_employee_bus_details AS empbus SET empbus.status=?,empbus.updated_date=? WHERE empbus.tbl_user_emp_gid=? and empbus.id=?;", [Register.status,Register.updated_date,gid,id], callback);
+        return db.query("UPDATE employee.tbl_register_employee_bus_details AS empbus SET empbus.status=?, \
+                         empbus.updated_date=? WHERE empbus.tbl_user_emp_gid=? \
+                         and empbus.id=?;", [Register.status,Register.updated_date,gid,id], callback);
     },
+
+    getOccupiedSeats: function(routeNo, callback){
+
+        return db.query("SELECT COUNT(*) as occupiedSeats FROM tbl_register_employee_bus_details \
+                         WHERE status=1 and route_no=?;",[routeNo], callback)
+}
 };
 
 module.exports = Register;

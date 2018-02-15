@@ -331,4 +331,16 @@ router.put('/:EMP_GID/journeys/cancel/:ID', function (req, res, next) {
         }
     });
 });
+router.get('/availableseats/:routeNo', function (req, res, next) {
+    Register.getOccupiedSeats(req.params.routeNo, function (err, rows) {
+        if (err) {
+            console.error('[Employee] - ['+req.originalUrl+'] - [getBusRegisterCheck] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
+            res.status(500);
+            res.json({status:"fail", message: "Error while performing DB Query"});
+        }else {
+            res.json({status:"success", data: rows});
+        }
+    });
+
+});
 module.exports = router;
