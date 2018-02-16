@@ -23,28 +23,28 @@ var Register = {
         return db.query("SELECT user.emp_gid as gid, concat(user.first_name,' ',user.last_name) AS name, \
                          empbus.route_no, empbus.origin, empbus.destination,empbus.pick_up_point, \
                          empbus.created_date, empbus.updated_date, empbus.journey_type, \
-                         empbus.status FROM employee.tbl_register_employee_bus_details AS empbus \
-                         INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
+                         empbus.status FROM tbl_register_employee_bus_details AS empbus \
+                         INNER JOIN tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
                          WHERE empbus.journey_type='Year' AND user.emp_gid=?", [id], callback);
     },
     getBusJourneysSingle: function (id, callback) {
         return db.query("SELECT user.emp_gid as gid, concat(user.first_name,' ',user.last_name) AS name, \
                          empbus.route_no, empbus.origin, empbus.destination,empbus.pick_up_point, \
                          empbus.created_date, empbus.journey_date, empbus.journey_type, \
-                         empbus.status FROM employee.tbl_register_employee_bus_details AS empbus \
-                         INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
+                         empbus.status FROM tbl_register_employee_bus_details AS empbus \
+                         INNER JOIN tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
                          WHERE empbus.journey_type='Single' AND user.emp_gid=?", [id], callback);
     },
     getBusJourneys: function (id, callback) {
         return db.query("SELECT user.emp_gid as gid, concat(user.first_name,' ',user.last_name) AS name, \
                          empbus.route_no, empbus.origin, empbus.destination,empbus.pick_up_point, empbus.id, \
                          empbus.created_date, empbus.journey_type, \
-                         empbus.status FROM employee.tbl_register_employee_bus_details AS empbus \
-                         INNER JOIN employee.tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
+                         empbus.status FROM tbl_register_employee_bus_details AS empbus \
+                         INNER JOIN tbl_user AS user ON empbus.tbl_user_emp_gid = user.emp_gid \
                          WHERE empbus.status=1 AND user.emp_gid=?", [id], callback);
     },
-    canncelJourney: function (gid, id,Register, callback) {
-        return db.query("UPDATE employee.tbl_register_employee_bus_details AS empbus SET empbus.status=?, \
+    cancelJourney: function (gid, id,Register, callback) {
+        return db.query("UPDATE tbl_register_employee_bus_details AS empbus SET empbus.status=?, \
                          empbus.updated_date=? WHERE empbus.tbl_user_emp_gid=? \
                          and empbus.id=?;", [Register.status,Register.updated_date,gid,id], callback);
     },
