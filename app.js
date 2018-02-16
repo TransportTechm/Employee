@@ -18,7 +18,7 @@ var swaggerDefinition = {
     description: 'Demonstrating how to desribe a RESTful API with Swagger',
   },
   host: 'employeeservicetechm.cfapps.io',
-  basePath: '/transportationapi/employee/1.0',
+  basePath: '/employee/1.0',
 };
 
 // options for the swagger docs
@@ -51,8 +51,8 @@ app.use(bodyParser.urlencoded({
 //end body-parser configuration
 
 app.use('/', routes);
-app.use('/transportationapi/employee/1.0/users', users);
-app.use('/transportationapi/employee/1.0/permission', permission);
+app.use('/employee/1.0/users', users);
+app.use('/employee/1.0/permission', permission);
 app.get('/swagger.json', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
