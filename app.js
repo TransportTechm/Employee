@@ -17,7 +17,8 @@ var swaggerDefinition = {
     version: '1.0',
     description: 'Demonstrating how to desribe a RESTful API with Swagger',
   },
-  host: 'employeeservicetechm.cfapps.io',
+  //host: 'employeeservicetechm.cfapps.io',
+  host: 'localhost:3000',
   basePath: '/employee/1.0',
 };
 

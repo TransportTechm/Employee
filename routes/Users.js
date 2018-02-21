@@ -124,14 +124,43 @@ router.post('/', function (req, res, next) {
         res.json({status:"fail", message: "Request is missing POST body!"});
     }
 });
+/**
+ * @swagger
+ * /users/{EMP_GID}:
+ *   get:
+ *     tags:
+ *       - Users
+ *     description: Get user with given ID
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: EMP_GID
+ *         description: Employee's id
+ *         in: path
+ *         required: true
+ *         type: integer
+ *     consumes:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: An array of Users
+ *         schema:
+ *           $ref: '#/definitions/Users'
+ */
 router.get('/:EMP_GID', function (req, res, next) {
     if (req.params.EMP_GID) {
         User.getUserById(req.params.EMP_GID, function (err, rows, fields) {
+            
             if (err) {
                 console.error('[Employee] - ['+req.originalUrl+'] - [getUserById] - ['+req.method+'] - [Error while performing Query] - [Error:'+err.sqlMessage+']');
                 res.status(500);
                 res.json({status:"fail", message: "Error while performing DB Query"});
+            } else if(rows.length == 0) {
+                console.error('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [Invalid User Credentials]');
+                res.status(404);
+                res.json({status:"fail", message: "Not Found"});
             } else {
+               // console.log('[Employee] - ['+req.path+'] - [userAuthenticate] - ['+req.method+'] - [User logged in]');
                 res.json({status:"success", data: rows});
             }
         });
@@ -148,6 +177,31 @@ router.delete('/:EMP_GID', function (req, res, next) {
         }
     });
 });
+/**
+ * @swagger
+ * /users/{EMP_GID}:
+ *   put:
+ *     tags:
+ *       - Users
+ *     description: Updates a single user
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: EMP_GID
+ *         description: User's EMP_GID
+ *         in: path
+ *         required: true
+ *         type: integer
+ *       - name: User
+ *         description: User object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Users'
+ *     responses:
+ *       200:
+ *         description: Successfully updated
+ */
 router.put('/:EMP_GID', function (req, res, next) {
     User.updateUser(req.params.EMP_GID, req.body, function (err, rows) {
         if (err) {
