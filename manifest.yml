@@ -2,9 +2,10 @@
 applications:
 - name: EmployeeService-TechM-Test
   memory: 256M
-  instances: 1
+  instances: 2
   path: .
   command: node app.js
   buildpack: nodejs_buildpack
   services:
    - Employee-Service-DB
+   - AutoScaler-Transport
